@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Catan {
-    public enum Resource {
+    public enum ResourceType {
         BRICK = 0,
         GRAIN = 1,
         LUMBER = 2,
