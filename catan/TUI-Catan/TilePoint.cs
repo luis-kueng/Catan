@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 namespace Catan {
     public enum TilePoint {
-        TOP = 0,
-        RIGHT_UP = 1,
-        RIGHT_DOWN = 2,
-        BOTTOM = 3,
-        LEFT_DOWN = 4,
-        LEFT_UP = 5,
+        TOP_POINT = 0,
+        TOP_RIGHT_POINT = 1,
+        BOTTOM_RIGHT_POINT = 2,
+        BOTTOM_POINT = 3,
+        BOTTOM_LEFT_POINT = 4,
+        TOP_LEFT_POINT = 5,
+
+        TOP_RIGHT_SIDE = 10,
+        TOP_LEFT_SIDE = 11,
+        MID_RIGHT_SIDE = 12,
+        BOTTOM_RIGHT_SIDE = 13,
+        BOTTOM_LEFT_SIDE = 14,
+        MID_LEFT_SIDE = 15,
     }
 }
