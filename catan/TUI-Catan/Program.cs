@@ -1,7 +1,12 @@
-﻿namespace Catan {
+﻿using Catan.GameFields;
+
+namespace Catan
+{
     public class Program {
         public static void Main() {
-            Console.WriteLine("Hallo Welt");
+            GameField gameField = new(3);
+            GameFieldUtilities fieldUtilities = new(gameField);
+            fieldUtilities.PrintField();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Catan;
+﻿using Catan.Buildings;
+using Catan.Players;
+using Catan.Tiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +8,8 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatanTests {
+namespace CatanTests
+{
     public class TileTest {
         [Test] 
         public void CreateTileTest() {
@@ -24,8 +27,13 @@ namespace CatanTests {
             int diceNumber = 5;
             Tile tile = new(ResourceType.BRICK, diceNumber);
 
-            Player player = new();
-            Building building = new(player, BuildingType.SETTLEMENT);
+            Player player = new("player1");
+            player.AddResource(ResourceType.BRICK, 1);
+            player.AddResource(ResourceType.LUMBER, 1);
+            player.AddResource(ResourceType.WOOL, 1);
+            player.AddResource(ResourceType.GRAIN, 1);
+
+            Building? building = BuildingFactory.Building(BuildingType.SETTLEMENT, player);
             tile.AddBuilding(building, TilePoint.BOTTOM_POINT);
 
             Assert.That(tile.GetBuildingByPoint(TilePoint.BOTTOM_POINT), Is.EqualTo(building));
@@ -36,11 +44,11 @@ namespace CatanTests {
             int diceNumber = 5;
             Tile tile = new(ResourceType.BRICK, diceNumber);
 
-            Player player1 = new();
-            Player player2 = new();
+            Player player1 = new("player1");
+            Player player2 = new("player2");
 
-            Building building1 = new(player1, BuildingType.SETTLEMENT);
-            Building building2 = new(player2, BuildingType.SETTLEMENT);
+            Building? building1 = BuildingFactory.Building(BuildingType.SETTLEMENT, player1);
+            Building? building2 = BuildingFactory.Building(BuildingType.SETTLEMENT, player2);
 
             tile.AddBuilding(building1, TilePoint.BOTTOM_LEFT_POINT);
             tile.AddBuilding(building2 , TilePoint.BOTTOM_POINT);
@@ -53,8 +61,8 @@ namespace CatanTests {
             int diceNumber = 5;
             Tile tile = new(ResourceType.BRICK, diceNumber);
 
-            Player player = new();
-            Building building = new(player, BuildingType.STREET);
+            Player player = new("player1");
+            Building? building = BuildingFactory.Building(BuildingType.STREET, player);
             tile.AddBuilding(building, TilePoint.BOTTOM_LEFT_SIDE);
 
             Assert.That(tile.GetBuildingByPoint(TilePoint.BOTTOM_LEFT_SIDE), Is.EqualTo(building));

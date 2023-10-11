@@ -4,7 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Catan {
-    public class GameField {
+namespace Catan.Buildings
+{
+    public enum BuildingType
+    {
+        STREET = 0,
+        SETTLEMENT = 1,
+        CITY = 2,
     }
 }
