@@ -37,11 +37,6 @@ namespace Catan.Players
             Resources[type] += amount;
         }
 
-        public void RemoveResource(ResourceType type, int amount)
-        {
-            Resources[type] -= amount;
-        }
-
         public Building? BuildBuilding(BuildingType type)
         {
             Building? building = BuildingFactory.Building(type, this);
@@ -89,6 +84,11 @@ namespace Catan.Players
         {
             RemoveResource(ResourceType.ORE, 3);
             RemoveResource(ResourceType.GRAIN, 2);
+        }
+
+        private void RemoveResource(ResourceType type, int amount)
+        {
+            Resources[type] -= amount;
         }
 
         private bool HasResources(ResourceType type, int amount)

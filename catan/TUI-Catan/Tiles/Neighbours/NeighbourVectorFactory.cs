@@ -4,13 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Catan.Tiles {
-    public static class NeighbourVectorFactory {
-        public static NeighbourVector NeighbourVectorByDirection(TilePoint direction, bool isEven) {
-            int x = isEven ? 0 : 1;
+namespace Catan.Tiles.Neighbours
+{
+    public static class NeighbourVectorFactory
+    {
+        public static NeighbourVector NeighbourVectorByDirection(TilePoint direction, bool isEven)
+        {
+            int x = 0;
             int y = isEven ? 0 : 1;
 
-            switch (direction) {
+            switch (direction)
+            {
                 case TilePoint.TOP_RIGHT_SIDE:
                     x -= 1;
                     y += 1;

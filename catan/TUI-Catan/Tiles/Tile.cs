@@ -1,4 +1,5 @@
 ﻿using Catan.Buildings;
+using Catan.Tiles.TilePoints;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,12 +40,46 @@ namespace Catan.Tiles
 
         private bool IsPointAvailable(TilePoint point)
         {
-            return IsNeighbourAvailable(point, 1) && IsNeighbourAvailable(point, -1);
+            return 
+                IsNeighbourAvailable(point, 1) && 
+                IsNeighbourAvailable(point, -1) &&
+                IsNeighbourOnNextTileAvailable(point);
         }
 
         private bool IsNeighbourAvailable(TilePoint point, int neighbour)
         {
             return !Buildings.ContainsKey((TilePoint)((int)point + neighbour));
+        }
+
+        private bool IsNeighbourOnNextTileAvailable(TilePoint point) {
+            TilePoint neighbourDirection = TilePointConverter.PointToLeftNeighbourSide(point);
+
+            Tile? neighbourTile;
+
+            if (NeighbourTiles.ContainsKey(neighbourDirection)) {
+                neighbourTile = NeighbourTiles[neighbourDirection];
+            } else {
+               neighbourDirection = TilePointConverter.PointToRightNeighbourSide(point);
+
+                if (NeighbourTiles.ContainsKey(neighbourDirection)) {
+                    neighbourTile = NeighbourTiles[neighbourDirection];
+                } else {
+                    return false;
+                }
+            }
+
+            TilePoint directionForNeighbour;
+
+            switch (neighbourDirection) {
+                case TilePoint.TOP_RIGHT_SIDE:
+                    directionForNeighbour = TilePoint.TOP_RIGHT_POINT;
+                    break;
+
+                default:
+                    return true;
+            }
+
+            return !neighbourTile.Buildings.ContainsKey(directionForNeighbour);
         }
 
         public Building? GetBuildingByPoint(TilePoint point)
@@ -86,6 +121,16 @@ namespace Catan.Tiles
             }
 
             return null;
+        }
+
+        public static bool IsNotNull(Tile? tile) {
+            return tile != null;
+        }
+
+        public void GiveOutResources() {
+            foreach (Building building in Buildings.Values) {
+                building.AddResource(ResourceType);
+            }
         }
     }
 }

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Catan.Buildings;
+using Catan.Players;
 using Catan.Tiles;
+using Catan.Tiles.Neighbours;
 
 namespace Catan.GameFields
 {
@@ -24,10 +27,10 @@ namespace Catan.GameFields
         }
         private void GenerateField()
         {
-            for (int i = 0; i < _rowSize; i++)
+            for (int row = 0; row < _rowSize; row++)
             {
-                int AmountOfTiles = CalculateAmountOfTiles(i);
-                FillRowWithTiles(AmountOfTiles, i);
+                int AmountOfTiles = CalculateAmountOfTiles(row);
+                FillRowWithTiles(AmountOfTiles, row);
             }
         }
 
@@ -38,18 +41,16 @@ namespace Catan.GameFields
 
         private void FillRowWithTiles(int amountOfTiles, int row)
         {
+            NeighbourUtility nb = new(Field, row);
             Field[row] = new Tile[_rowSize];
-            Tile?[] tiles = Field[row]; 
             int prefix = CalculateAmountOfNullValuesInTileRow(amountOfTiles);
-            NeighbourUtility nb = new NeighbourUtility(Field, row);
 
             for (int i = 0; i < amountOfTiles; i++)
             {
-                Tile newTile = Tile.CreateRandomTile();
-                tiles[prefix + i] = newTile;
+                Field[row][prefix + i] = Tile.CreateRandomTile(); ;
 
                 nb.Column = i;
-                nb.AddNeighbours();
+                nb.AddAllNeighboursInField();
             }
         }
 
@@ -57,7 +58,22 @@ namespace Catan.GameFields
         private int CalculateAmountOfNullValuesInTileRow(int amountOfTiles)
         {
             int nullSpaces = _rowSize - amountOfTiles;
-            return FieldSize % 2 == 0 ? nullSpaces / 2 + 1 : nullSpaces / 2;
+            return FieldSize % 2 == 0 ? ((nullSpaces == 0) ? 0 : nullSpaces / 2 + 1) : nullSpaces / 2;
+        }
+
+        public void AddBuildingToField(BuildingType buildingType, Player player, int x, int y) {
+            if (Tile.IsNotNull(Field[x][y])) {
+                Building? building = BuildingFactory.Building(buildingType, player);
+                Field[x][y]?.AddBuilding(building, TilePoint.BOTTOM_RIGHT_POINT);
+            }
+        }
+
+        public void GiveOutResources() {
+            foreach (var field in Field) {
+                foreach (var tile in field) {
+                    tile?.GiveOutResources();
+                }
+            }
         }
     }
 }

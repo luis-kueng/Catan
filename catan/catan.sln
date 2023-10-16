@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUI-Catan", "TUI-Catan\TUI-Catan.csproj", "{D20A40A7-E8EF-4B7C-AB47-8328A9CD867A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catan", "TUI-Catan\Catan.csproj", "{D20A40A7-E8EF-4B7C-AB47-8328A9CD867A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatanTests", "CatanTests\CatanTests.csproj", "{3236F65C-2345-47E6-8055-3E09E24D041E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatanTests", "CatanTests\CatanTests.csproj", "{3236F65C-2345-47E6-8055-3E09E24D041E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D20A40A7-E8EF-4B7C-AB47-8328A9CD867A} = {D20A40A7-E8EF-4B7C-AB47-8328A9CD867A}
 	EndProjectSection

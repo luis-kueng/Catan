@@ -1,12 +1,12 @@
 ﻿using Catan.GameFields;
+using Catan.Games;
 
 namespace Catan
 {
     public class Program {
         public static void Main() {
-            GameField gameField = new(3);
-            GameFieldUtilities fieldUtilities = new(gameField);
-            fieldUtilities.PrintField();
+            Game game = new();
+            game.Start();
         }
     }
 }
