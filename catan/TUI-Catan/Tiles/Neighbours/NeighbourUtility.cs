@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Catan.Tiles.Directions;
 
 namespace Catan.Tiles.Neighbours
 {
@@ -31,33 +32,33 @@ namespace Catan.Tiles.Neighbours
 
             if (Tile.IsNotNull(tile))
             {
-                AddNeighbourToTile(TilePoint.MID_LEFT_SIDE, tile);
-                AddNeighbourToTile(TilePoint.TOP_RIGHT_SIDE, tile);
-                AddNeighbourToTile(TilePoint.TOP_LEFT_SIDE, tile);
+                AddNeighbourToTile(TileSide.MID_LEFT_SIDE, tile);
+                AddNeighbourToTile(TileSide.TOP_RIGHT_SIDE, tile);
+                AddNeighbourToTile(TileSide.TOP_LEFT_SIDE, tile);
             }
         }
 
-        private void AddNeighbourToTile(TilePoint point, Tile tile)
+        private void AddNeighbourToTile(TileSide side, Tile tile)
         {
-            Tile? neighbour = GetNeighbourByDirection(point);
+            Tile? neighbour = GetNeighbourByDirection(side);
 
             if (Tile.IsNotNull(neighbour))
             {
-                tile.AddNeighbouringTile(neighbour, point);
+                tile.AddNeighbouringTile(neighbour, side);
             }
         }
 
-        private Tile? GetNeighbourByDirection(TilePoint point)
+        private Tile? GetNeighbourByDirection(TileSide side)
         {
-            NeighbourVector vector = GetNeighbourVector(point);
+            NeighbourVector vector = GetNeighbourVector(side);
 
             Tile? tile = GetNeighbourTileByVector(vector);
             return tile;
         }
 
-        private NeighbourVector GetNeighbourVector(TilePoint point)
+        private NeighbourVector GetNeighbourVector(TileSide side)
         {
-            return NeighbourVectorFactory.NeighbourVectorByDirection(point, IsEvenRow());
+            return NeighbourVectorFactory.NeighbourVectorByDirection(side, IsEvenRow());
         }
 
         private Tile? GetNeighbourTileByVector(NeighbourVector vector)

@@ -1,6 +1,7 @@
 ﻿using Catan.Buildings;
 using Catan.Players;
 using Catan.Tiles;
+using Catan.Tiles.Directions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,18 +58,6 @@ namespace CatanTests
         }
 
         [Test]
-        public void AddStreetTest() {
-            int diceNumber = 5;
-            Tile tile = new(ResourceType.BRICK, diceNumber);
-
-            Player player = new("player1");
-            Building? building = BuildingFactory.Building(BuildingType.STREET, player);
-            tile.AddBuilding(building, TilePoint.BOTTOM_LEFT_SIDE);
-
-            Assert.That(tile.GetBuildingByPoint(TilePoint.BOTTOM_LEFT_SIDE), Is.EqualTo(building));
-        }
-
-        [Test]
         public void AddNeighbouringTile() {
             int diceNumber = 5;
             Tile tile1 = new(ResourceType.BRICK, diceNumber);
@@ -76,11 +65,11 @@ namespace CatanTests
             diceNumber = 3;
             Tile tile2 = new(ResourceType.WOOL, diceNumber);
 
-            tile1.AddNeighbouringTile(tile2 , TilePoint.BOTTOM_LEFT_SIDE);
+            tile1.AddNeighbouringTile(tile2 , TileSide.BOTTOM_LEFT_SIDE);
 
             Assert.Multiple(() => {
-                Assert.That(tile1.GetNeighbouringTileByPoint(TilePoint.BOTTOM_LEFT_SIDE), Is.EqualTo(tile2));
-                Assert.That(tile2.GetNeighbouringTileByPoint(TilePoint.TOP_LEFT_SIDE), Is.EqualTo(tile1));
+                Assert.That(tile1.GetNeighbouringTileByPoint(TileSide.BOTTOM_LEFT_SIDE), Is.EqualTo(tile2));
+                Assert.That(tile2.GetNeighbouringTileByPoint(TileSide.TOP_LEFT_SIDE), Is.EqualTo(tile1));
             });
         }
     }

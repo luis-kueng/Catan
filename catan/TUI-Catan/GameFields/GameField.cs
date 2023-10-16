@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Catan.Buildings;
 using Catan.Players;
 using Catan.Tiles;
+using Catan.Tiles.Directions;
 using Catan.Tiles.Neighbours;
 
 namespace Catan.GameFields

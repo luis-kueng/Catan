@@ -1,5 +1,5 @@
 ﻿using Catan.Buildings;
-using Catan.Tiles.TilePoints;
+using Catan.Tiles.Directions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,8 @@ namespace Catan.Tiles
         public int DiceNumber { get; set; }
         public ResourceType ResourceType { get; set; }
         public Dictionary<TilePoint, Building> Buildings { get; set; }
-        public Dictionary<TilePoint, Tile> NeighbourTiles { get; set; }
+        public Dictionary<TileSide, StreetBuilding> Streets { get; set; }
+        public Dictionary<TileSide, Tile> NeighbourTiles { get; set; }
 
         private static readonly Random _random = new();
 
@@ -22,12 +23,13 @@ namespace Catan.Tiles
             ResourceType = resourceType;
             DiceNumber = diceNumber;
             Buildings = new Dictionary<TilePoint, Building>();
-            NeighbourTiles = new Dictionary<TilePoint, Tile>();
+            Streets = new Dictionary<TileSide, StreetBuilding>();
+            NeighbourTiles = new Dictionary<TileSide, Tile>();
         }
 
         public static Tile CreateRandomTile()
         {
-            return new Tile(ResourceType.BRICK, _random.Next(1, 10));
+            return new Tile(ResourceType.BRICK, _random.Next(1, 12));
         }
 
         public void AddBuilding(Building? building, TilePoint point)
@@ -35,6 +37,12 @@ namespace Catan.Tiles
             if (IsPointAvailable(point) && building != null)
             {
                 Buildings[point] = building;
+            }
+        }
+
+        public void AddStreet(StreetBuilding? street, TileSide side) {
+            if (street != null) {
+                Streets[side] = street;
             }
         }
 
@@ -52,14 +60,14 @@ namespace Catan.Tiles
         }
 
         private bool IsNeighbourOnNextTileAvailable(TilePoint point) {
-            TilePoint neighbourDirection = TilePointConverter.PointToLeftNeighbourSide(point);
+            TileSide neighbourDirection = DirectionConverter.PointToLeftNeighbourSide(point);
 
             Tile? neighbourTile;
 
             if (NeighbourTiles.ContainsKey(neighbourDirection)) {
                 neighbourTile = NeighbourTiles[neighbourDirection];
             } else {
-               neighbourDirection = TilePointConverter.PointToRightNeighbourSide(point);
+               neighbourDirection = DirectionConverter.PointToRightNeighbourSide(point);
 
                 if (NeighbourTiles.ContainsKey(neighbourDirection)) {
                     neighbourTile = NeighbourTiles[neighbourDirection];
@@ -68,16 +76,7 @@ namespace Catan.Tiles
                 }
             }
 
-            TilePoint directionForNeighbour;
-
-            switch (neighbourDirection) {
-                case TilePoint.TOP_RIGHT_SIDE:
-                    directionForNeighbour = TilePoint.TOP_RIGHT_POINT;
-                    break;
-
-                default:
-                    return true;
-            }
+            TilePoint directionForNeighbour = TilePoint.TOP_POINT;
 
             return !neighbourTile.Buildings.ContainsKey(directionForNeighbour);
         }
@@ -92,30 +91,18 @@ namespace Catan.Tiles
             return null;
         }
 
-        public void AddNeighbouringTile(Tile tile, TilePoint point)
+        public void AddNeighbouringTile(Tile tile, TileSide side)
         {
-            if (!NeighbourTiles.ContainsKey(point))
+            if (!NeighbourTiles.ContainsKey(side))
             {
-                NeighbourTiles[point] = tile;
-                tile.AddNeighbouringTile(this, GetMirroredPoint(point));
+                NeighbourTiles[side] = tile;
+                tile.AddNeighbouringTile(this, DirectionConverter.GetMirroredSide(side));
             }
         }
 
-        private static TilePoint GetMirroredPoint(TilePoint point)
+        public Tile? GetNeighbouringTileByPoint(TileSide side)
         {
-            int result = (int)point + 3;
-
-            if (result > 5 && result < 10 || result > 15)
-            {
-                result -= 6;
-            }
-
-            return (TilePoint)result;
-        }
-
-        public Tile? GetNeighbouringTileByPoint(TilePoint point)
-        {
-            if (NeighbourTiles.TryGetValue(point, out Tile? tile))
+            if (NeighbourTiles.TryGetValue(side, out Tile? tile))
             {
                 return tile;
             }
