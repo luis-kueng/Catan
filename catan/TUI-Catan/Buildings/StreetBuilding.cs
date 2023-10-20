@@ -6,7 +6,7 @@ namespace Catan.Buildings {
         public StreetBuilding(Player player) : base(player) {
         }
 
-        public override void AddResource(ResourceType type) {
+        public override void GivePlayerResource(ResourceType type) {
         }
     }
 }

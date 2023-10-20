@@ -7,15 +7,15 @@ namespace Catan.Tiles.Neighbours {
             int y = isEven ? 1 : 0;
 
             switch (direction) {
-                case TileSide.MID_LEFT_SIDE:
+                case TileSide.MIDLEFTSIDE:
                     y -= 1;
                     break;
 
-                case TileSide.TOP_LEFT_SIDE:
+                case TileSide.TOPLEFTSIDE:
                     x -= 1;
                     break;
 
-                case TileSide.TOP_RIGHT_SIDE:
+                case TileSide.TOPRIGHTSIDE:
                     x -= 1;
                     y += 1;
                     break;

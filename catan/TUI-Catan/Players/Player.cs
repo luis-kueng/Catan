@@ -8,7 +8,7 @@ namespace Catan.Players {
         }
 
         public Dictionary<ResourceType, int> Resources {
-            get; set;
+            get;
         }
 
         public Player(string name) {

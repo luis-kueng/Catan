@@ -21,6 +21,7 @@ namespace Catan.Utilities {
 
             String? input;
 
+            EmptyLine();
             Console.WriteLine("What size chould the field be?");
             Console.WriteLine("Default: " + fieldSize);
             do {
@@ -37,6 +38,7 @@ namespace Catan.Utilities {
             LinkedList<Player> players = new();
 
             for (int i = 0; i < amountOfPlayers; i++) {
+                EmptyLine();
                 Console.WriteLine("What is the name of Player " + (i + 1) + "?");
                 string? name = Console.ReadLine();
 
@@ -60,12 +62,13 @@ namespace Catan.Utilities {
 
         private static GameOptions ChooseOption(Dictionary<string, GameOptions> options) {
             String regexOptions = "^[";
-            Console.WriteLine("Options:");
+            EmptyLine();
+            Console.WriteLine("Options: ");
+            EmptyLine();
             foreach (var i in options) {
-
                 Console.WriteLine(
                     "  [" + i.Key + "]  " +
-                    i.Value.ToString().Replace('_', ' ').ToLowerInvariant()
+                    i.Value.ToString().Replace('_', ' ').ToUpperInvariant()
                     );
 
                 regexOptions += i.Key;
@@ -85,16 +88,16 @@ namespace Catan.Utilities {
 
             int i = 1;
             foreach (var point in tilePoints) {
-                Console.WriteLine("[" + i + "]" + "   " + point.ToString());
+                Console.WriteLine("[" + i + "]   " + point.ToString());
                 regexOptions += i++;
             }
 
             string input = GetInput(
                 new Regex("^[" + regexOptions + "]$"),
                 "Please enter valid Option!"
-                ); ;
+                );
 
-            return tilePoints[Int32.Parse(input) - 1];
+            return tilePoints[int.Parse(input) - 1];
         }
 
         public static (int, int) ChooseTileCoordinatesForBuilding() {
@@ -104,17 +107,19 @@ namespace Catan.Utilities {
                 "Please insert valid value!"
                 ).Split();
 
-            return (Int32.Parse(cords[0]), Int32.Parse(cords[1]));
+            return (int.Parse(cords[0]), int.Parse(cords[1]));
         }
 
         private static string GetInput(string initialText, Regex regex, string textWhenWrong) {
+            EmptyLine();
             Console.WriteLine(initialText);
+            EmptyLine();
 
             string? input = Console.ReadLine();
 
-            while (string.IsNullOrEmpty(input) || input == null || !regex.IsMatch(input)) {
-                Console.WriteLine();
+            while (string.IsNullOrEmpty(input) || !regex.IsMatch(input)) {
                 Console.WriteLine(textWhenWrong);
+                EmptyLine();
                 input = Console.ReadLine();
             }
 
@@ -123,6 +128,26 @@ namespace Catan.Utilities {
 
         private static string GetInput(Regex regex, string textWhenWrong) {
             return GetInput("", regex, textWhenWrong);
+        }
+
+        public static void PrintDiceNumber(int diceNumber) {
+            EmptyLine();
+            Console.WriteLine("Es wurde " + diceNumber + " gewürfelt!");
+            EmptyLine();
+        }
+
+        public static void EmptyLine() {
+            Console.WriteLine();
+        }
+
+        public static void PrintInitialSettlementScreen() {
+            EmptyLine();
+            Console.WriteLine("Please choose your initial Settlement");
+            EmptyLine();
+        }
+
+        public static void ResetScreen() {
+            Console.Clear();
         }
     }
 }

@@ -20,12 +20,25 @@ namespace Catan.GameFields {
 
         public GameField(int fieldSize) {
             FieldSize = fieldSize;
-            _rowSize = 2 * fieldSize - 1;
-            Field = new Tile?[2 * FieldSize - 1][];
+            _rowSize = (2 * fieldSize) - 1;
+            Field = new Tile?[(2 * FieldSize) - 1][];
             nb = new(Field, 0);
-            allTiles = Field.Cast<Tile>().Where(tile => tile != null).ToArray();
 
             GenerateField();
+            allTiles = CollectAllTiles();
+        }
+
+        private Tile[] CollectAllTiles() {
+            List<Tile> tiles = new();
+
+            foreach (var row in Field) {
+                foreach (var tile in row) {
+                    if (tile == null) continue;
+                    tiles.Add(tile);
+                }
+            }
+
+            return tiles.ToArray();
         }
 
         private void GenerateField() {

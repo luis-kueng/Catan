@@ -95,7 +95,7 @@ namespace Catan.Tiles {
                     }
                 }
 
-                TilePoint directionForNeighbour = TilePoint.TOP_POINT;
+                TilePoint directionForNeighbour = TilePoint.TOPPOINT;
 
                 return !neighbourTile.Buildings.ContainsKey(directionForNeighbour);
 
@@ -135,14 +135,14 @@ namespace Catan.Tiles {
 
         public void GiveOutResources() {
             foreach (Building building in Buildings.Values) {
-                building.AddResource(ResourceType);
+                building.GivePlayerResource(ResourceType);
             }
         }
 
         public void GiveOutResources(Player buildingOwner) {
             foreach (Building building in Buildings.Values) {
                 if (building.Player == buildingOwner)
-                    building.AddResource(ResourceType);
+                    building.GivePlayerResource(ResourceType);
             }
         }
     }

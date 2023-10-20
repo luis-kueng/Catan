@@ -2,60 +2,60 @@
     public static class DirectionConverter {
         public static TileSide PointToLeftNeighbourSide(TilePoint point) {
             return point switch {
-                TilePoint.TOP_POINT => TileSide.TOP_LEFT_SIDE,
-                TilePoint.TOP_LEFT_POINT => TileSide.MID_LEFT_SIDE,
-                TilePoint.BOTTOM_LEFT_POINT => TileSide.BOTTOM_LEFT_SIDE,
-                TilePoint.BOTTOM_POINT => TileSide.BOTTOM_RIGHT_SIDE,
-                TilePoint.BOTTOM_RIGHT_POINT => TileSide.MID_RIGHT_SIDE,
-                TilePoint.TOP_RIGHT_POINT => TileSide.TOP_RIGHT_SIDE,
+                TilePoint.TOPPOINT => TileSide.TOPLEFTSIDE,
+                TilePoint.TOPLEFTPOINT => TileSide.MIDLEFTSIDE,
+                TilePoint.BOTTOMLEFTPOINT => TileSide.BOTTOMLEFTSIDE,
+                TilePoint.BOTTOMPOINT => TileSide.BOTTOMRIGHTSIDE,
+                TilePoint.BOTTOMRIGHTPOINT => TileSide.MIDRIGHTSIDE,
+                TilePoint.TOPRIGHTPOINT => TileSide.TOPRIGHTSIDE,
                 _ => throw new NotSupportedException(),
             };
         }
 
         public static TileSide PointToRightNeighbourSide(TilePoint point) {
             return point switch {
-                TilePoint.TOP_POINT => TileSide.TOP_RIGHT_SIDE,
-                TilePoint.TOP_RIGHT_POINT => TileSide.MID_RIGHT_SIDE,
-                TilePoint.BOTTOM_RIGHT_POINT => TileSide.BOTTOM_RIGHT_SIDE,
-                TilePoint.BOTTOM_POINT => TileSide.BOTTOM_LEFT_SIDE,
-                TilePoint.BOTTOM_LEFT_POINT => TileSide.MID_LEFT_SIDE,
-                TilePoint.TOP_LEFT_POINT => TileSide.TOP_LEFT_SIDE,
+                TilePoint.TOPPOINT => TileSide.TOPRIGHTSIDE,
+                TilePoint.TOPRIGHTPOINT => TileSide.MIDRIGHTSIDE,
+                TilePoint.BOTTOMRIGHTPOINT => TileSide.BOTTOMRIGHTSIDE,
+                TilePoint.BOTTOMPOINT => TileSide.BOTTOMLEFTSIDE,
+                TilePoint.BOTTOMLEFTPOINT => TileSide.MIDLEFTSIDE,
+                TilePoint.TOPLEFTPOINT => TileSide.TOPLEFTSIDE,
                 _ => throw new NotSupportedException(),
             };
         }
 
         public static TileSide MirroredSide(TileSide side) {
             return side switch {
-                TileSide.TOP_RIGHT_SIDE => TileSide.BOTTOM_LEFT_SIDE,
-                TileSide.TOP_LEFT_SIDE => TileSide.BOTTOM_RIGHT_SIDE,
-                TileSide.MID_RIGHT_SIDE => TileSide.MID_LEFT_SIDE,
-                TileSide.BOTTOM_RIGHT_SIDE => TileSide.TOP_LEFT_SIDE,
-                TileSide.BOTTOM_LEFT_SIDE => TileSide.TOP_RIGHT_SIDE,
-                TileSide.MID_LEFT_SIDE => TileSide.MID_RIGHT_SIDE,
+                TileSide.TOPRIGHTSIDE => TileSide.BOTTOMLEFTSIDE,
+                TileSide.TOPLEFTSIDE => TileSide.BOTTOMRIGHTSIDE,
+                TileSide.MIDRIGHTSIDE => TileSide.MIDLEFTSIDE,
+                TileSide.BOTTOMRIGHTSIDE => TileSide.TOPLEFTSIDE,
+                TileSide.BOTTOMLEFTSIDE => TileSide.TOPRIGHTSIDE,
+                TileSide.MIDLEFTSIDE => TileSide.MIDRIGHTSIDE,
                 _ => throw new NotSupportedException(),
             };
         }
 
         public static TilePoint MirroredPointLeft(TilePoint point) {
             return point switch {
-                TilePoint.TOP_POINT => TilePoint.BOTTOM_RIGHT_POINT,
-                TilePoint.TOP_LEFT_POINT => TilePoint.TOP_RIGHT_POINT,
-                TilePoint.BOTTOM_LEFT_POINT => TilePoint.TOP_POINT,
-                TilePoint.BOTTOM_POINT => TilePoint.TOP_LEFT_POINT,
-                TilePoint.BOTTOM_RIGHT_POINT => TilePoint.BOTTOM_LEFT_POINT,
-                TilePoint.TOP_RIGHT_POINT => TilePoint.BOTTOM_POINT,
+                TilePoint.TOPPOINT => TilePoint.BOTTOMRIGHTPOINT,
+                TilePoint.TOPLEFTPOINT => TilePoint.TOPRIGHTPOINT,
+                TilePoint.BOTTOMLEFTPOINT => TilePoint.TOPPOINT,
+                TilePoint.BOTTOMPOINT => TilePoint.TOPLEFTPOINT,
+                TilePoint.BOTTOMRIGHTPOINT => TilePoint.BOTTOMLEFTPOINT,
+                TilePoint.TOPRIGHTPOINT => TilePoint.BOTTOMPOINT,
                 _ => throw new NotSupportedException(),
             };
         }
 
         public static TilePoint MirroredPointRight(TilePoint point) {
             return point switch {
-                TilePoint.TOP_POINT => TilePoint.BOTTOM_LEFT_POINT,
-                TilePoint.TOP_RIGHT_POINT => TilePoint.TOP_LEFT_POINT,
-                TilePoint.BOTTOM_RIGHT_POINT => TilePoint.TOP_POINT,
-                TilePoint.BOTTOM_POINT => TilePoint.TOP_RIGHT_POINT,
-                TilePoint.BOTTOM_LEFT_POINT => TilePoint.BOTTOM_RIGHT_POINT,
-                TilePoint.TOP_LEFT_POINT => TilePoint.BOTTOM_POINT,
+                TilePoint.TOPPOINT => TilePoint.BOTTOMLEFTPOINT,
+                TilePoint.TOPRIGHTPOINT => TilePoint.TOPLEFTPOINT,
+                TilePoint.BOTTOMRIGHTPOINT => TilePoint.TOPPOINT,
+                TilePoint.BOTTOMPOINT => TilePoint.TOPRIGHTPOINT,
+                TilePoint.BOTTOMLEFTPOINT => TilePoint.BOTTOMRIGHTPOINT,
+                TilePoint.TOPLEFTPOINT => TilePoint.BOTTOMPOINT,
                 _ => throw new NotSupportedException(),
             };
         }

@@ -5,11 +5,11 @@ using Catan.Tiles.Directions;
 
 namespace Catan.Utilities {
     public class GameFieldUtility {
-        private static readonly char _emptySpace = ' ';
-        private static readonly string _pointChar = " () ";
-        private static readonly string _diagonalUpChar = "//";
-        private static readonly string _diagonalDownChar = @"\\";
-        private static readonly string _sideChar = " || ";
+        private const char _emptySpace = ' ';
+        private const string _pointChar = " () ";
+        private const string _diagonalUpChar = "//";
+        private const string _diagonalDownChar = @"\\";
+        private const string _sideChar = " || ";
 
         string topRow_prefix = "";
         string diagonal1_prefix = "";
@@ -52,11 +52,8 @@ namespace Catan.Utilities {
         private void PrintTop(Tile?[] tileRow, bool isUneven = false, bool isLowering = false) {
             bool isFrstTile = true;
 
-
-
             foreach (Tile? tile in tileRow) {
                 if (tile != null) {
-
                     if (isFrstTile) {
                         if (isUneven) {
                             if (isLowering) {
@@ -73,7 +70,6 @@ namespace Catan.Utilities {
                     }
 
                     AddTileModule(tile);
-
                 } else {
                     if (isFrstTile) {
                         AddNullTile();
@@ -83,7 +79,7 @@ namespace Catan.Utilities {
 
             if (isLowering) {
                 topRow_prefix +=
-                    EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
+                    EmptySpaces(3 + (2 * _diagonalUpChar.Length)) +
                     _pointChar;
 
                 diagonal1_prefix +=
@@ -98,31 +94,31 @@ namespace Catan.Utilities {
 
         private void AddIfLowering() {
             topRow_prefix =
-                topRow_prefix.Remove(0, 3 + _pointChar.Length + 2 * _diagonalDownChar.Length) +
+                topRow_prefix.Remove(0, 3 + _pointChar.Length + (2 * _diagonalDownChar.Length)) +
                 _pointChar +
-                EmptySpaces(3 + 2 * _diagonalDownChar.Length);
+                EmptySpaces(3 + (2 * _diagonalDownChar.Length));
 
             diagonal1_prefix =
-                diagonal1_prefix.Remove(0, 2 + 2 * _diagonalDownChar.Length) +
+                diagonal1_prefix.Remove(0, 2 + (2 * _diagonalDownChar.Length)) +
                 _diagonalDownChar +
                 EmptySpaces(2 + _diagonalDownChar.Length);
 
             diagonal2_prefix =
-                diagonal2_prefix.Remove(0, 2 + 2 * _diagonalDownChar.Length) +
+                diagonal2_prefix.Remove(0, 2 + (2 * _diagonalDownChar.Length)) +
                 EmptySpaces(1 + _diagonalDownChar.Length) +
                 _diagonalDownChar +
-                EmptySpaces(1); ;
+                EmptySpaces(1);
         }
 
         private void AddIfUnevenAndLowering() {
             int halfTileSize =
                 3 +
-                2 * _diagonalUpChar.Length +
+                (2 * _diagonalUpChar.Length) +
                 _pointChar.Length;
 
             topRow_prefix +=
                 _pointChar +
-                EmptySpaces(3 + 2 * _diagonalDownChar.Length);
+                EmptySpaces(3 + (2 * _diagonalDownChar.Length));
 
             diagonal1_prefix +=
                 EmptySpaces(1 + _pointChar.Length) +
@@ -142,7 +138,7 @@ namespace Catan.Utilities {
         private void AddIfUneven() {
             int halfTileSize =
                 3 +
-                2 * _diagonalUpChar.Length +
+                (2 * _diagonalUpChar.Length) +
                 _pointChar.Length;
 
             topRow_prefix += EmptySpaces(halfTileSize);
@@ -163,16 +159,16 @@ namespace Catan.Utilities {
         }
 
         private void AddTileModule(Tile tile) {
-            tile.Buildings.TryGetValue(TilePoint.TOP_POINT, out Building? building);
+            tile.Buildings.TryGetValue(TilePoint.TOPPOINT, out Building? building);
 
             topRow_prefix +=
-                EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
+                EmptySpaces(3 + (2 * _diagonalUpChar.Length)) +
                 (building == null ? _pointChar : "(XX)") +
-                EmptySpaces(3 + 2 * _diagonalUpChar.Length + _pointChar.Length)
+                EmptySpaces(3 + (2 * _diagonalUpChar.Length) + _pointChar.Length)
                 ;
 
-            tile.Streets.TryGetValue(TileSide.TOP_LEFT_SIDE, out StreetBuilding? street_topLeft);
-            tile.Streets.TryGetValue(TileSide.TOP_RIGHT_SIDE, out StreetBuilding? street_topRight);
+            tile.Streets.TryGetValue(TileSide.TOPLEFTSIDE, out StreetBuilding? street_topLeft);
+            tile.Streets.TryGetValue(TileSide.TOPRIGHTSIDE, out StreetBuilding? street_topRight);
 
             diagonal1_prefix +=
                 EmptySpaces(2 + _diagonalUpChar.Length) +
@@ -193,40 +189,39 @@ namespace Catan.Utilities {
                 (street_topRight == null ? _diagonalDownChar : "XX") +
                 EmptySpaces(1 + _pointChar.Length);
 
-            tile.Buildings.TryGetValue(TilePoint.TOP_RIGHT_POINT, out Building? building2);
+            tile.Buildings.TryGetValue(TilePoint.TOPRIGHTPOINT, out Building? building2);
 
             midRow_prefix +=
                 EmptySpaces(
                     6 +
-                    2 * _diagonalUpChar.Length +
-                    2 * _diagonalDownChar.Length +
+                    (2 * _diagonalUpChar.Length) +
+                    (2 * _diagonalDownChar.Length) +
                     _pointChar.Length
                     ) +
                 (building2 == null ? _pointChar : "(XX)");
 
-            tile.Streets.TryGetValue(TileSide.MID_RIGHT_SIDE, out StreetBuilding? street_midRight);
+            tile.Streets.TryGetValue(TileSide.MIDRIGHTSIDE, out StreetBuilding? street_midRight);
 
             side1_prefix +=
-                EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
+                EmptySpaces(3 + (2 * _diagonalUpChar.Length)) +
                 GetDiceNumberFormatted(tile) +
-                EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
+                EmptySpaces(3 + (2 * _diagonalUpChar.Length)) +
                 (street_midRight == null ? _sideChar : " SS ");
 
             side2_prefix +=
-                EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
+                EmptySpaces(3 + (2 * _diagonalUpChar.Length)) +
                 GetResourceTypeFormatted(tile) +
-                EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
+                EmptySpaces(3 + (2 * _diagonalUpChar.Length)) +
                 (street_midRight == null ? _sideChar : " SS ");
-
         }
 
         private void AddNullTile() {
             string nullTile =
                 EmptySpaces(
                     6 +
-                    2 * _diagonalUpChar.Length +
-                    2 * _diagonalDownChar.Length +
-                    2 * _pointChar.Length
+                    (2 * _diagonalUpChar.Length) +
+                    (2 * _diagonalDownChar.Length) +
+                    (2 * _pointChar.Length)
                     );
 
             topRow_prefix += nullTile;
@@ -245,8 +240,6 @@ namespace Catan.Utilities {
             string resourceType = tile.ResourceType.ToString();
             return "[" + resourceType[0] + resourceType[1] + "]";
         }
-
-
 
         private static string EmptySpaces(int amount) {
             return new string(_emptySpace, amount);

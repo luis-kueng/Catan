@@ -1,4 +1,5 @@
 ﻿using Catan.Buildings;
+using Catan.Exceptions;
 using Catan.GameFields;
 using Catan.Players;
 using Catan.Tiles;
@@ -8,7 +9,7 @@ using Catan.Utilities;
 namespace Catan.Games {
     public class Game {
         public LinkedList<Player> Players {
-            get; set;
+            get;
         }
 
         public LinkedListNode<Player> CurrentPlayer {
@@ -16,23 +17,25 @@ namespace Catan.Games {
         }
 
         public GameField Field {
-            get; set;
+            get;
         }
 
         public Game(int fieldSize, LinkedList<Player> players) {
             Players = players;
             Field = new(fieldSize);
 
-            if (Players != null && Players.First != null)
+            if (Players?.First != null)
                 CurrentPlayer = Players.First;
             else
-                throw new Exception();
+                throw new PLayersListEmptyException();
         }
 
         public void PlayerFirstBuild(int x, int y, TilePoint point) {
-            Console.WriteLine("Please choose your initial Settlement");
-            Field.AddBuildingToField(BuildingType.SETTLEMENT, CurrentPlayer.Value, x, y, point);
+            BuildBuilding(x, y, point, BuildingType.SETTLEMENT);
+        }
 
+        public void BuildBuilding(int x, int y, TilePoint point, BuildingType type) {
+            Field.AddBuildingToField(type, CurrentPlayer.Value, x, y, point);
             NextCurrentPlayer();
         }
 
@@ -40,8 +43,15 @@ namespace Catan.Games {
             Field.GiveOutResources(CurrentPlayer.Value);
         }
 
-        public void GiveOutResourcesForDice() {
-            Field.GiveOutResources(Dice.RollTwoDice());
+        public int RollDiceAndGiveOutResources() {
+            var diceNumber = Dice.RollTwoDice();
+            Field.GiveOutResources(diceNumber);
+
+            return diceNumber;
+        }
+
+        public void EndRound() {
+            NextCurrentPlayer();
         }
 
         private void NextCurrentPlayer() {
@@ -49,6 +59,14 @@ namespace Catan.Games {
                 CurrentPlayer = CurrentPlayer.Next;
             else if (Players.First != null)
                 CurrentPlayer = Players.First;
+        }
+
+        internal void TradePlayer() {
+            throw new NotImplementedException();
+        }
+
+        internal void TradeBank() {
+            throw new NotImplementedException();
         }
     }
 }

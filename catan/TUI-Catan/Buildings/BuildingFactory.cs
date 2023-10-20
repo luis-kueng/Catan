@@ -3,6 +3,10 @@
 namespace Catan.Buildings {
     public static class BuildingFactory {
         public static Building? Building(BuildingType type, Player player) {
+            if (player == null) {
+                return null;
+            }
+
             switch (type) {
                 case BuildingType.STREET:
                     if (player.HasResourcesForStreet()) {

@@ -1,9 +1,10 @@
 ﻿namespace Catan.Utilities {
-    public class GameOptionDictionaries {
+    public static class GameOptionDictionaries {
         public static readonly Dictionary<string, GameOptions> BasicGameOptions = new() {
             {"1", GameOptions.BUILD },
             {"2", GameOptions.TRADE },
             {"3", GameOptions.BUY_CARD },
+            {"4", GameOptions.END_ROUND },
         };
 
         public static readonly Dictionary<string, GameOptions> BuildGameOptions = new() {

@@ -11,5 +11,7 @@
 
         BUY_CARD,
         USE_CARD,
+
+        END_ROUND,
     }
 }

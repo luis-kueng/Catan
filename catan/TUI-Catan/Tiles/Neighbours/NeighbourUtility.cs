@@ -27,9 +27,9 @@ namespace Catan.Tiles.Neighbours {
             Tile? tile = Field[Row][Column];
 
             if (tile != null) {
-                AddNeighbourToTile(TileSide.MID_LEFT_SIDE, tile);
-                AddNeighbourToTile(TileSide.TOP_LEFT_SIDE, tile);
-                AddNeighbourToTile(TileSide.TOP_RIGHT_SIDE, tile);
+                AddNeighbourToTile(TileSide.MIDLEFTSIDE, tile);
+                AddNeighbourToTile(TileSide.TOPLEFTSIDE, tile);
+                AddNeighbourToTile(TileSide.TOPRIGHTSIDE, tile);
 
             }
         }

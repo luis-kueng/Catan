@@ -7,10 +7,10 @@ namespace Catan.Buildings {
             get; set;
         }
 
-        public Building(Player player) {
+        protected Building(Player player) {
             Player = player;
         }
 
-        public abstract void AddResource(ResourceType type);
+        public abstract void GivePlayerResource(ResourceType type);
     }
 }
