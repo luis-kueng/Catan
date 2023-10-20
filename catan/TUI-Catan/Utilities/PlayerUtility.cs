@@ -1,17 +1,13 @@
-﻿using Catan.Tiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Catan.Players;
+using Catan.Tiles;
 
-namespace Catan.Players {
-    public class PlayerUtility 
-    {
-        public Player Player { get; set; }
-        
-        public PlayerUtility(Player player) 
-        { 
+namespace Catan.Utilities {
+    public class PlayerUtility {
+        public Player Player {
+            get; set;
+        }
+
+        public PlayerUtility(Player player) {
             Player = player;
         }
 

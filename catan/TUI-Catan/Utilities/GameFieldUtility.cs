@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Catan.Buildings;
+using Catan.GameFields;
 using Catan.Tiles;
+using Catan.Tiles.Directions;
 
-namespace Catan.GameFields
-{
-    public class GameFieldUtility
-    {
+namespace Catan.Utilities {
+    public class GameFieldUtility {
         private static readonly char _emptySpace = ' ';
         private static readonly string _pointChar = " () ";
         private static readonly string _diagonalUpChar = "//";
         private static readonly string _diagonalDownChar = @"\\";
-        private static readonly string _sideChar = " || "; 
+        private static readonly string _sideChar = " || ";
 
         string topRow_prefix = "";
         string diagonal1_prefix = "";
@@ -22,15 +18,15 @@ namespace Catan.GameFields
         string side1_prefix = "";
         string side2_prefix = "";
 
-        public GameField Field { get; set; }
+        public GameField Field {
+            get; set;
+        }
 
-        public GameFieldUtility(GameField field)
-        {
+        public GameFieldUtility(GameField field) {
             Field = field;
         }
 
-        public void PrintField()
-        {
+        public void PrintField() {
             for (int i = 0; i < Field.Field.Length; i++) {
                 topRow_prefix = "";
                 diagonal1_prefix = "";
@@ -53,11 +49,10 @@ namespace Catan.GameFields
             }
         }
 
-        private void PrintTop(Tile?[] tileRow, bool isUneven = false, bool isLowering = false)
-        {
+        private void PrintTop(Tile?[] tileRow, bool isUneven = false, bool isLowering = false) {
             bool isFrstTile = true;
 
-            
+
 
             foreach (Tile? tile in tileRow) {
                 if (tile != null) {
@@ -80,13 +75,43 @@ namespace Catan.GameFields
                     AddTileModule(tile);
 
                 } else {
-                    AddNullTile();
+                    if (isFrstTile) {
+                        AddNullTile();
+                    }
                 }
+            }
+
+            if (isLowering) {
+                topRow_prefix +=
+                    EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
+                    _pointChar;
+
+                diagonal1_prefix +=
+                    EmptySpaces(2 + _diagonalUpChar.Length) +
+                    _diagonalUpChar;
+
+                diagonal2_prefix +=
+                    _emptySpace +
+                    _diagonalUpChar;
             }
         }
 
         private void AddIfLowering() {
+            topRow_prefix =
+                topRow_prefix.Remove(0, 3 + _pointChar.Length + 2 * _diagonalDownChar.Length) +
+                _pointChar +
+                EmptySpaces(3 + 2 * _diagonalDownChar.Length);
 
+            diagonal1_prefix =
+                diagonal1_prefix.Remove(0, 2 + 2 * _diagonalDownChar.Length) +
+                _diagonalDownChar +
+                EmptySpaces(2 + _diagonalDownChar.Length);
+
+            diagonal2_prefix =
+                diagonal2_prefix.Remove(0, 2 + 2 * _diagonalDownChar.Length) +
+                EmptySpaces(1 + _diagonalDownChar.Length) +
+                _diagonalDownChar +
+                EmptySpaces(1); ;
         }
 
         private void AddIfUnevenAndLowering() {
@@ -95,16 +120,16 @@ namespace Catan.GameFields
                 2 * _diagonalUpChar.Length +
                 _pointChar.Length;
 
-            topRow_prefix += 
+            topRow_prefix +=
                 _pointChar +
-                EmptySpaces(3 + 2*_diagonalDownChar.Length);
+                EmptySpaces(3 + 2 * _diagonalDownChar.Length);
 
-            diagonal1_prefix += 
+            diagonal1_prefix +=
                 EmptySpaces(1 + _pointChar.Length) +
                 _diagonalDownChar +
                 EmptySpaces(2 + _diagonalDownChar.Length);
 
-            diagonal2_prefix += 
+            diagonal2_prefix +=
                 EmptySpaces(2 + _pointChar.Length + _diagonalDownChar.Length) +
                 _diagonalDownChar +
                 EmptySpaces(1);
@@ -137,53 +162,62 @@ namespace Catan.GameFields
             side2_prefix += _sideChar;
         }
 
-        private void AddTileModule(Tile tile) 
-        {
-            topRow_prefix += 
-                EmptySpaces(3 + 2*_diagonalUpChar.Length) +
-                _pointChar +
+        private void AddTileModule(Tile tile) {
+            tile.Buildings.TryGetValue(TilePoint.TOP_POINT, out Building? building);
+
+            topRow_prefix +=
+                EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
+                (building == null ? _pointChar : "(XX)") +
                 EmptySpaces(3 + 2 * _diagonalUpChar.Length + _pointChar.Length)
                 ;
 
+            tile.Streets.TryGetValue(TileSide.TOP_LEFT_SIDE, out StreetBuilding? street_topLeft);
+            tile.Streets.TryGetValue(TileSide.TOP_RIGHT_SIDE, out StreetBuilding? street_topRight);
+
             diagonal1_prefix +=
                 EmptySpaces(2 + _diagonalUpChar.Length) +
-                _diagonalUpChar +
+                (street_topLeft == null ? _diagonalUpChar : "XX") +
                 EmptySpaces(2 + _pointChar.Length) +
-                _diagonalDownChar +
+                (street_topRight == null ? _diagonalDownChar : "XX") +
                 EmptySpaces(2 + _diagonalDownChar.Length + _pointChar.Length);
 
             diagonal2_prefix +=
                 _emptySpace +
-                _diagonalUpChar +
+                (street_topLeft == null ? _diagonalUpChar : "XX") +
                 EmptySpaces(
-                    4 + 
-                    _diagonalUpChar.Length + 
-                    _pointChar.Length + 
+                    4 +
+                    _diagonalUpChar.Length +
+                    _pointChar.Length +
                     _diagonalDownChar.Length
                     ) +
-                _diagonalDownChar +
+                (street_topRight == null ? _diagonalDownChar : "XX") +
                 EmptySpaces(1 + _pointChar.Length);
+
+            tile.Buildings.TryGetValue(TilePoint.TOP_RIGHT_POINT, out Building? building2);
 
             midRow_prefix +=
                 EmptySpaces(
-                    6 + 
-                    2 * _diagonalUpChar.Length + 
-                    2 * _diagonalDownChar.Length + 
+                    6 +
+                    2 * _diagonalUpChar.Length +
+                    2 * _diagonalDownChar.Length +
                     _pointChar.Length
                     ) +
-                _pointChar;
+                (building2 == null ? _pointChar : "(XX)");
+
+            tile.Streets.TryGetValue(TileSide.MID_RIGHT_SIDE, out StreetBuilding? street_midRight);
 
             side1_prefix +=
                 EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
                 GetDiceNumberFormatted(tile) +
                 EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
-                _sideChar;
+                (street_midRight == null ? _sideChar : " SS ");
 
             side2_prefix +=
                 EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
                 GetResourceTypeFormatted(tile) +
                 EmptySpaces(3 + 2 * _diagonalUpChar.Length) +
-                _sideChar;
+                (street_midRight == null ? _sideChar : " SS ");
+
         }
 
         private void AddNullTile() {
@@ -204,7 +238,7 @@ namespace Catan.GameFields
         }
 
         private static string GetDiceNumberFormatted(Tile tile) {
-            return (tile.DiceNumber > 9 ? "[" + tile.DiceNumber + "]" : "[0" + tile.DiceNumber + "]");
+            return tile.DiceNumber > 9 ? "[" + tile.DiceNumber + "]" : "[0" + tile.DiceNumber + "]";
         }
 
         private static string GetResourceTypeFormatted(Tile tile) {
@@ -212,10 +246,9 @@ namespace Catan.GameFields
             return "[" + resourceType[0] + resourceType[1] + "]";
         }
 
-        
 
-        private static string EmptySpaces(int amount)
-        {
+
+        private static string EmptySpaces(int amount) {
             return new string(_emptySpace, amount);
         }
     }
