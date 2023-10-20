@@ -1,2 +1,2 @@
 # Catan
-Text based version of the strategie game Catan
+Text based version of the strategy game Catan
