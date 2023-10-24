@@ -1,4 +1,6 @@
-﻿namespace Catan.Utilities {
+﻿using Catan.Players;
+
+namespace Catan.Utilities {
     public static class GameOptionDictionaries {
         public static readonly Dictionary<string, GameOptions> BasicGameOptions = new() {
             {"1", GameOptions.BUILD },
@@ -16,6 +18,13 @@
         public static readonly Dictionary<string, GameOptions> TradeGameOptions = new() {
             {"1", GameOptions.TRADE_PLAYER },
             {"2", GameOptions.TRADE_BANK},
+        };
+
+        public static readonly Dictionary<string, Colors> ColorOptions = new() {
+            {"1", Colors.WHITE },
+            {"2", Colors.RED},
+            {"3", Colors.BLUE },
+            {"4", Colors.YELLOW },
         };
     }
 }

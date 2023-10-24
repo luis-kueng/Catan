@@ -4,15 +4,20 @@ using Catan.Tiles;
 namespace Catan.Players {
     public class Player {
         public string Name {
-            get; set;
+            get;
+        }
+
+        public Colors Color {
+            get;
         }
 
         public Dictionary<ResourceType, int> Resources {
             get;
         }
 
-        public Player(string name) {
+        public Player(string name, Colors color) {
             Name = name;
+            Color = color;
             Resources = new Dictionary<ResourceType, int>();
             LoadResources();
         }

@@ -10,7 +10,7 @@ namespace CatanTests
     internal class GameFieldTest {
         [Test]
         public void CreateFieldTest() {
-            var fieldSize = 3;
+            const int fieldSize = 3;
             GameField gameField = new(fieldSize);
 
             Assert.That(gameField, Is.Not.Null);

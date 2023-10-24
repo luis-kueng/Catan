@@ -1,5 +1,6 @@
 ﻿using Catan.Players;
 using Catan.Tiles.Directions;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Catan.Utilities {
@@ -42,25 +43,28 @@ namespace Catan.Utilities {
                 Console.WriteLine("What is the name of Player " + (i + 1) + "?");
                 string? name = Console.ReadLine();
 
-                players.AddLast(new Player(name ?? "Player " + (i + 1)));
+                Colors color = ChooseOption<Colors>(GameOptionDictionaries.ColorOptions);
+                GameOptionDictionaries.ColorOptions.Remove(GameOptionDictionaries.ColorOptions.First(i => i.Value == color).Key);
+
+                players.AddLast(new Player(name ?? "Player " + (i + 1), color));
             }
 
             return players;
         }
 
         public static GameOptions ChooseBasicOption() {
-            return ChooseOption(GameOptionDictionaries.BasicGameOptions);
+            return ChooseOption<GameOptions>(GameOptionDictionaries.BasicGameOptions);
         }
 
         public static GameOptions ChooseBuildOption() {
-            return ChooseOption(GameOptionDictionaries.BuildGameOptions);
+            return ChooseOption<GameOptions>(GameOptionDictionaries.BuildGameOptions);
         }
 
         public static GameOptions ChooseTradeOption() {
-            return ChooseOption(GameOptionDictionaries.TradeGameOptions);
+            return ChooseOption<GameOptions>(GameOptionDictionaries.TradeGameOptions);
         }
 
-        private static GameOptions ChooseOption(Dictionary<string, GameOptions> options) {
+        private static T ChooseOption<T>(Dictionary<string, T> options) where T : Enum {
             String regexOptions = "^[";
             EmptyLine();
             Console.WriteLine("Options: ");
