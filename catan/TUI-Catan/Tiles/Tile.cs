@@ -73,7 +73,7 @@ namespace Catan.Tiles {
         private bool IsPointAvailable(TilePoint point) {
             return
                 // TODO: Left Point &&
-                // TODO  Right Point &&
+                // TODO: Right Point &&
                 IsNeighbourOnNextTileAvailable(point);
         }
 
