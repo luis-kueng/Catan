@@ -2,6 +2,7 @@
 using Catan.Players;
 using Catan.Tiles;
 using Catan.Tiles.Directions;
+using System.Text;
 
 namespace Catan.Utilities {
     public class TileUtility {
@@ -21,6 +22,25 @@ namespace Catan.Utilities {
             }
 
             Console.Write("       ");
+        }
+
+        public static string GetTileTop(Tile tile) {
+            var top = new StringBuilder();
+            top.Append("       ");
+
+            Building? building = tile.GetBuildingByPoint(TilePoint.TOPPOINT);
+            if (building != null) {
+                top.Append("(");
+                top.Append("XX");
+                top.Append(")");
+
+            } else {
+                top.Append(" () ");
+            }
+
+            top.Append("       ");
+
+            return top.ToString();
         }
     }
 }

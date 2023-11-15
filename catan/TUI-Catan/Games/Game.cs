@@ -8,11 +8,11 @@ using Catan.Utilities;
 
 namespace Catan.Games {
     public class Game {
-        public LinkedList<Player> Players {
+        public List<Player> Players {
             get;
         }
 
-        public LinkedListNode<Player> CurrentPlayer {
+        public int CurrentPlayer {
             get; set;
         }
 
@@ -20,14 +20,13 @@ namespace Catan.Games {
             get;
         }
 
-        public Game(int fieldSize, LinkedList<Player> players) {
+        public Game(int fieldSize, List<Player> players) {
+            if (players == null)
+                throw new PLayersListEmptyException();
+
             Players = players;
             Field = new(fieldSize);
-
-            if (Players?.First != null)
-                CurrentPlayer = Players.First;
-            else
-                throw new PLayersListEmptyException();
+            CurrentPlayer = 0;
         }
 
         public void PlayerFirstBuild(int x, int y, TilePoint point) {
@@ -35,12 +34,12 @@ namespace Catan.Games {
         }
 
         public void BuildBuilding(int x, int y, TilePoint point, BuildingType type) {
-            Field.AddBuildingToField(type, CurrentPlayer.Value, x, y, point);
+            Field.AddBuildingToField(type, getCurrentPlayer(), x, y, point);
             NextCurrentPlayer();
         }
 
         public void GiveOutResourcesForPlayer() {
-            Field.GiveOutResources(CurrentPlayer.Value);
+            Field.GiveOutResources(CurrentPlayer);
         }
 
         public int RollDiceAndGiveOutResources() {
@@ -55,10 +54,10 @@ namespace Catan.Games {
         }
 
         private void NextCurrentPlayer() {
-            if (CurrentPlayer.Next != null)
-                CurrentPlayer = CurrentPlayer.Next;
-            else if (Players.First != null)
-                CurrentPlayer = Players.First;
+            if (CurrentPlayer == Players.Count - 1)
+                CurrentPlayer = 0;
+            else
+                CurrentPlayer++;
         }
 
         internal void TradePlayer() {
@@ -67,6 +66,10 @@ namespace Catan.Games {
 
         internal void TradeBank() {
             throw new NotImplementedException();
+        }
+
+        public Player getCurrentPlayer() {
+            return Players[CurrentPlayer];
         }
     }
 }

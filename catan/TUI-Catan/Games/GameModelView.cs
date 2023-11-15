@@ -2,6 +2,7 @@
 using Catan.Players;
 using Catan.Tiles.Directions;
 using Catan.Utilities;
+using Terminal.Gui;
 
 namespace Catan.Games {
     public class GameModelView {
@@ -12,14 +13,36 @@ namespace Catan.Games {
         private int amountOfPlayers;
 
         public GameModelView() {
+            /**
             SetAmountOfPlayers();
             int fieldSize = SetFieldSize();
             LinkedList<Player> players = SetPlayers();
-
+           
             game = new(fieldSize, players);
+            
             fieldUtility = new(game.Field);
             playerUtility = new(game.CurrentPlayer.Value);
+            **/
         }
+
+        public void StartGame() {
+            Application.Init();
+            List<Player> players = new();
+            players.Add(new Player("p1", Players.Colors.WHITE));
+            players.Add(new Player("p2", Players.Colors.RED));
+            players.Add(new Player("p3", Players.Colors.YELLOW));
+            players.Add(new Player("p4", Players.Colors.BLUE));
+
+            MainWindow window = new(new Game(3, players));
+            Application.Top.Add(window);
+
+            Application.Run();
+            Application.Shutdown();
+
+            window.Dispose();
+        }
+
+        /**
 
         private void SetAmountOfPlayers() {
             amountOfPlayers = TUI.AmountOfPlayers();
@@ -164,5 +187,6 @@ namespace Catan.Games {
 
             game.BuildBuilding(x, y, point, type);
         }
+        **/
     }
 }
