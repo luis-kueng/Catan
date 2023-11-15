@@ -10,7 +10,7 @@ namespace Catan.Utilities {
         private Label profile;
         private TableView resourceTable;
 
-        public PlayerWindow(Game game) {
+        public PlayerWindow(Game game, Action buildAction, Action tradeOptionDialog) {
             Game = game;
 
             Title = "Player";
@@ -69,20 +69,7 @@ namespace Catan.Utilities {
             Add(profile, resourceTable, options);
         }
 
-        public void buildAction() {
 
-        }
-
-        public void tradeAction() {
-            Application.MainLoop.Invoke(() => {
-                Game.getCurrentPlayer().Resources[ResourceType.BRICK] = 5;
-
-                setResources();
-
-                profile.SetNeedsDisplay();
-                resourceTable.SetNeedsDisplay();
-            });
-        }
 
         private void nextRoundAction() {
             Application.MainLoop.Invoke(() => {
@@ -110,6 +97,21 @@ namespace Catan.Utilities {
             dt.Rows.Add("Wool", resources[ResourceType.WOOL]);
 
             resourceTable.Table = dt;
+        }
+
+        public void tradeAction() {
+            Application.MainLoop.Invoke(() => {
+                Game.getCurrentPlayer().Resources[ResourceType.BRICK]++;
+                Game.getCurrentPlayer().Resources[ResourceType.GRAIN]++;
+                Game.getCurrentPlayer().Resources[ResourceType.LUMBER]++;
+                Game.getCurrentPlayer().Resources[ResourceType.ORE]++;
+                Game.getCurrentPlayer().Resources[ResourceType.WOOL]++;
+
+                setResources();
+
+                profile.SetNeedsDisplay();
+                resourceTable.SetNeedsDisplay();
+            });
         }
 
         private void setPlayerName() {
