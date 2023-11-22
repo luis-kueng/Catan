@@ -79,7 +79,7 @@ namespace Catan.Utilities {
                 setResources();
 
                 profile.SetNeedsDisplay();
-                resourceTable.SetNeedsDisplay();
+                ReloadResources();
             });
         }
 
@@ -110,12 +110,17 @@ namespace Catan.Utilities {
                 setResources();
 
                 profile.SetNeedsDisplay();
-                resourceTable.SetNeedsDisplay();
+                ReloadResources();
             });
         }
 
         private void setPlayerName() {
             profile.Text = Game.getCurrentPlayer().Name;
+        }
+
+        public void ReloadResources() {
+            setResources();
+            resourceTable.SetNeedsDisplay();
         }
     }
 }

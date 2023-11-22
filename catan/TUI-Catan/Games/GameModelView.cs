@@ -7,8 +7,6 @@ using Terminal.Gui;
 namespace Catan.Games {
     public class GameModelView {
         private readonly Game game;
-        private readonly GameFieldUtility fieldUtility;
-        private readonly PlayerUtility playerUtility;
 
         private int amountOfPlayers;
 
@@ -27,13 +25,14 @@ namespace Catan.Games {
 
         public void StartGame() {
             Application.Init();
-            List<Player> players = new();
-            players.Add(new Player("p1", Players.Colors.WHITE));
-            players.Add(new Player("p2", Players.Colors.RED));
-            players.Add(new Player("p3", Players.Colors.YELLOW));
-            players.Add(new Player("p4", Players.Colors.BLUE));
+            List<Player> players = new() {
+                new Player("p1", Players.Colors.WHITE),
+                new Player("p2", Players.Colors.RED),
+                new Player("p3", Players.Colors.YELLOW),
+                new Player("p4", Players.Colors.BLUE)
+            };
 
-            MainWindow window = new(new Game(3, players));
+            MainWindow window = new(new Game(2, players));
             Application.Top.Add(window);
 
             Application.Run();

@@ -3,54 +3,7 @@ using Catan.Tiles;
 using System.Text;
 
 namespace Catan.Utilities {
-    public class GameFieldUtility {
-        public Tile?[][] Field {
-            get;
-        }
-
-        public GameFieldUtility(GameField gameField) {
-            if (gameField == null)
-                throw new ArgumentNullException(nameof(gameField));
-
-            Field = gameField.Field;
-        }
-
-        public void PrintField() {
-            foreach (var row in Field) {
-                foreach (var tile in row) {
-                    if (tile != null) {
-                        TileUtility.PrintTileTop(tile);
-                        Console.WriteLine();
-                        Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-                        Console.WriteLine("                  ");
-                        Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-                        Console.WriteLine("                  ");
-                        Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-                        Console.WriteLine("                  ");
-                        Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-                        Console.WriteLine("                  ");
-                        Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-                        Console.Write("                  ");
-                    } else {
-                        Console.WriteLine("                  ");
-                        Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-                        Console.WriteLine("                  ");
-                        Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-                        Console.WriteLine("                  ");
-                        Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-                        Console.WriteLine("                  ");
-                        Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-                        Console.WriteLine("                  ");
-                        Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-                        Console.WriteLine("                  ");
-                    }
-
-                    Console.SetCursorPosition(Console.CursorLeft + 18, Console.CursorTop - 5);
-                }
-
-                Console.SetCursorPosition(Console.CursorLeft - (row.Length + 1) * 18, Console.CursorTop + 6);
-            }
-        }
+    public static class GameFieldUtility {
 
         public static string GetFieldString(GameField gameField) {
             Tile?[][] Field = gameField.Field;
@@ -75,7 +28,7 @@ namespace Catan.Utilities {
 
                 if (i >= Field.Length / 2 + 1) {
                     line1.Append("(  )  ");
-                    line2.Append("    \\\\");
+                    line2.Append("     \\");
                     line3.Append("      ");
                     line4.Append("      ");
                     line5.Append("      ");
@@ -87,13 +40,12 @@ namespace Catan.Utilities {
                     Tile? tile = Field[i][j];
 
                     if (tile != null) {
-                        line1.Append("      (  )  ");
-                        line2.Append("    //    \\\\");
+                        line1.Append("      (" + (tile.GetBuildingByPoint(Tiles.Directions.TilePoint.TOPPOINT) != null ? "XX" : "  ") + ")  ");
+                        line2.Append("    /  " + i + " " + j + " \\");
                         line3.Append("(  )  [" + (tile.DiceNumber < 10 ? " " : null) + tile.DiceNumber + "]  ");
-                        line4.Append(" ||   " + (tile.ResourceType.ToString().Length >= 4 ? tile.ResourceType.ToString()[..4] : tile.ResourceType.ToString()[..3] + " ") + "  ");
-
+                        line4.Append(" ¦¦   " + (tile.ResourceType.ToString().Length >= 4 ? tile.ResourceType.ToString()[..4] : tile.ResourceType.ToString()[..3] + " ") + "  ");
                         line5.Append("(  )        ");
-                        line6.Append("    \\\\    //");
+                        line6.Append("    \\      /");
                         line7.Append("      (  )  ");
 
                     } else if (j < Field[i].Length / 2 && Field[i][j + 1] != null && i % 2 == 0 && i > Field.Length / 2) {
@@ -118,11 +70,11 @@ namespace Catan.Utilities {
 
                 if (i > Field.Length / 2) {
                     line1.Append("      (  )");
-                    line2.Append("    //    ");
+                    line2.Append("    /     ");
                 }
 
                 line3.Append("(  )");
-                line4.Append(" || ");
+                line4.Append(" ¦¦ ");
 
                 field.Append(line1);
                 field.AppendLine();

@@ -2,9 +2,10 @@
     public enum TilePoint {
         TOPPOINT,
         TOPRIGHTPOINT,
-        BOTTOMRIGHTPOINT,
-        BOTTOMPOINT,
-        BOTTOMLEFTPOINT,
         TOPLEFTPOINT,
+        BOTTOMPOINT,
+        BOTTOMRIGHTPOINT,
+        BOTTOMLEFTPOINT,
+
     }
 }

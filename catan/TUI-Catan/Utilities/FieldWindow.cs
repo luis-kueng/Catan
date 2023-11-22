@@ -13,7 +13,6 @@ namespace Catan.Utilities {
             Height = Dim.Fill();
 
             field = new View() {
-                Text = "Hallo Welt",
                 X = 0,
                 Y = 0,
                 Width = Dim.Fill(),

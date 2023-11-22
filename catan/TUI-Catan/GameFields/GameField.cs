@@ -84,8 +84,10 @@ namespace Catan.GameFields {
         }
 
         public void AddBuildingToField(BuildingType buildingType, Player player, int x, int y, TilePoint point) {
+            Console.WriteLine("Creating Building");
             Building? building = BuildingFactory.Building(buildingType, player);
             if (building != null) {
+                Console.WriteLine("Built " + building.GetType().Name + " by Player " + building.Player.Name);
                 Field[x][y]?.BuildOnTile(building, point);
             }
         }

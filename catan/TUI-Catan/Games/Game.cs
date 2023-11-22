@@ -34,8 +34,8 @@ namespace Catan.Games {
         }
 
         public void BuildBuilding(int x, int y, TilePoint point, BuildingType type) {
+            Console.WriteLine("Trying to build");
             Field.AddBuildingToField(type, getCurrentPlayer(), x, y, point);
-            NextCurrentPlayer();
         }
 
         public void GiveOutResourcesForPlayer() {
