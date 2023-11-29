@@ -1,23 +1,21 @@
 ﻿using Catan.Buildings;
 using Catan.Exceptions;
 using Catan.Games;
-using Catan.Tiles;
 using Catan.Tiles.Directions;
 using NStack;
-using System.Data;
-using System.IO.Pipes;
 using Terminal.Gui;
 
 namespace Catan.Utilities {
     public class MainWindow : Window {
         private readonly Game Game;
 
-        private ustring? coordinates;
+        private ustring coordinates = "";
         private int buildingType;
         private int point;
 
         private readonly FieldWindow fieldWindow;
         private readonly PlayerWindow playerWindow;
+        private readonly Dialog buildOptions;
 
         private readonly ustring[] tileDirection = {
                 "Top Point",
@@ -37,34 +35,53 @@ namespace Catan.Utilities {
                 "Mid Left Side"
             };
 
-        private RadioGroup? points;
+        private readonly RadioGroup points;
+
+        private readonly Button cancelButton = new() {
+            Text = "Cancel"
+        };
+
+        private readonly Button buildButton = new() {
+            Text = "Build"
+        };
+
+        private readonly Dialog tradeOptions = new() {
+            Title = "Trade Options",
+            Width = Dim.Sized(30),
+            Height = Dim.Sized(30)
+        };
 
         public MainWindow(Game game) {
             Game = game;
 
             Title = "CaTUIan (Ctrl+Q to quit)";
 
-            playerWindow = new PlayerWindow(game, buildAction, tradeOptionDialog);
+            playerWindow = new PlayerWindow(Game, BuildAction, TradeOptionDialog);
             fieldWindow = new FieldWindow();
-            fieldWindow.reloadField(game.Field);
+            fieldWindow.ReloadField(Game.Field);
+
+            buildOptions = new() {
+                Title = "Build Options",
+                Width = Dim.Sized(40),
+                Height = Dim.Sized(18)
+            };
+
+            points = new() {
+                X = 0,
+                Y = 4,
+                RadioLabels = tileSides,
+                SelectedItem = 0
+            };
 
             Add(fieldWindow, playerWindow);
         }
 
-        protected override void Dispose(bool disposing) {
-            base.Dispose(disposing);
-
-            fieldWindow.Dispose();
-            playerWindow.Dispose();
-            points?.Dispose();
-        }
-        public void buildAction() {
+        public void BuildAction() {
             ustring[] buildingTypes = {
                 "Street",
                 "Settlement",
                 "City"
             };
-
 
             RadioGroup buildings = new() {
                 X = 0,
@@ -74,15 +91,6 @@ namespace Catan.Utilities {
             };
 
             buildings.SelectedItemChanged += Buildings_SelectedItemChanged;
-
-
-
-            points = new() {
-                X = 0,
-                Y = 4,
-                RadioLabels = tileSides,
-                SelectedItem = 0
-            };
 
             if (buildingType != 0) {
                 points.RadioLabels = tileDirection;
@@ -100,33 +108,19 @@ namespace Catan.Utilities {
 
             Label label = new(0, 11, "Please enter the Field to build on");
 
-            Dialog buildOptions = new Dialog() {
-                Title = "Build Options",
-                Width = Dim.Sized(40),
-                Height = Dim.Sized(18)
-            };
-
             buildOptions.Add(buildings, points, label, coordinateField);
-
-            Button cancelButton = new() {
-                Text = "Cancel"
-            };
-
-            Button buildButton = new() {
-                Text = "Build"
-            };
 
             buildButton.Clicked += (() => {
                 int x;
                 int y;
                 bool isCastSuccessful;
 
-                string[] input = coordinates.ToString().Split(" ");
+                ustring[] input = coordinates.Split(" ");
 
                 try {
                     try {
-                        var cast = Int32.TryParse(input[0], out x);
-                        var cast2 = Int32.TryParse(input[1], out y);
+                        var cast = Int32.TryParse((string)input[0], out x);
+                        var cast2 = Int32.TryParse((string)input[1], out y);
 
                         isCastSuccessful = cast && cast2;
                     } catch (IndexOutOfRangeException e) {
@@ -140,12 +134,11 @@ namespace Catan.Utilities {
                         Game.BuildBuilding(x, y, pointCasted, type);
                         Console.WriteLine("Building " + type + " at " + x + " - " + y + ", " + point);
 
-                        fieldWindow.reloadField(Game.Field);
+                        fieldWindow.ReloadField(Game.Field);
                         playerWindow.ReloadResources();
                     } else {
                         throw new InvalidCoordinatesException("invalid input");
                     }
-
                 } catch (InvalidCoordinatesException e) {
                     Console.WriteLine(e.Message);
                 }
@@ -178,14 +171,20 @@ namespace Catan.Utilities {
             coordinates = args.NewText;
         }
 
-        public void tradeOptionDialog() {
-            Dialog tradeOptions = new Dialog() {
-                Title = "Trade Options",
-                Width = Dim.Sized(30),
-                Height = Dim.Sized(30)
-            };
+        public void TradeOptionDialog() {
+            Application.Run(tradeOptions);
+        }
 
-            this.Add(tradeOptions);
+        protected override void Dispose(bool disposing) {
+            base.Dispose(disposing);
+
+            fieldWindow.Dispose();
+            playerWindow.Dispose();
+            points?.Dispose();
+            buildOptions.Dispose();
+            buildButton.Dispose();
+            cancelButton.Dispose();
+            tradeOptions.Dispose();
         }
     }
 }

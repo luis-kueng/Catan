@@ -2,9 +2,7 @@
 
 namespace Catan.Tiles.Neighbours {
     public class NeighbourUtility {
-        public Tile?[][] Field {
-            get; set;
-        }
+        private readonly Tile?[][] Field;
         public int Row {
             get; set;
         }
@@ -21,8 +19,6 @@ namespace Catan.Tiles.Neighbours {
             return Row % 2 == 0;
         }
 
-
-
         public void AddAllNeighboursInField() {
             Tile? tile = Field[Row][Column];
 
@@ -30,7 +26,6 @@ namespace Catan.Tiles.Neighbours {
                 AddNeighbourToTile(TileSide.MIDLEFTSIDE, tile);
                 AddNeighbourToTile(TileSide.TOPLEFTSIDE, tile);
                 AddNeighbourToTile(TileSide.TOPRIGHTSIDE, tile);
-
             }
         }
 

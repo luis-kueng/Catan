@@ -59,5 +59,29 @@
                 _ => throw new NotSupportedException(),
             };
         }
+
+        public static TilePoint PointToLeft(TilePoint point) {
+            return point switch {
+                TilePoint.TOPPOINT => TilePoint.TOPLEFTPOINT,
+                TilePoint.TOPLEFTPOINT => TilePoint.BOTTOMLEFTPOINT,
+                TilePoint.BOTTOMLEFTPOINT => TilePoint.BOTTOMPOINT,
+                TilePoint.BOTTOMPOINT => TilePoint.BOTTOMRIGHTPOINT,
+                TilePoint.BOTTOMRIGHTPOINT => TilePoint.TOPRIGHTPOINT,
+                TilePoint.TOPRIGHTPOINT => TilePoint.TOPPOINT,
+                _ => throw new NotSupportedException()
+            };
+        }
+
+        public static TilePoint PointToRight(TilePoint point) {
+            return point switch {
+                TilePoint.TOPPOINT => TilePoint.TOPRIGHTPOINT,
+                TilePoint.TOPRIGHTPOINT => TilePoint.BOTTOMRIGHTPOINT,
+                TilePoint.BOTTOMRIGHTPOINT => TilePoint.BOTTOMPOINT,
+                TilePoint.BOTTOMPOINT => TilePoint.BOTTOMLEFTPOINT,
+                TilePoint.BOTTOMLEFTPOINT => TilePoint.TOPLEFTPOINT,
+                TilePoint.TOPLEFTPOINT => TilePoint.TOPPOINT,
+                _ => throw new NotSupportedException()
+            };
+        }
     }
 }

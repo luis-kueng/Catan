@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Catan.Games {
+﻿namespace Catan.Games {
     public static class Dice {
         private static readonly Random _ran = new();
 
@@ -13,7 +7,7 @@ namespace Catan.Games {
         }
 
         private static int RollDice(int amt) {
-            return _ran.Next(0, amt * 6 + 1);
+            return _ran.Next(0, (amt * 6) + 1);
         }
     }
 }

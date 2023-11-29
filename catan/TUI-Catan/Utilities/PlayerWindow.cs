@@ -88,7 +88,7 @@ namespace Catan.Utilities {
             dt.Columns.Add("Resource", typeof(string));
             dt.Columns.Add("Amount", typeof(int));
 
-            Dictionary<ResourceType, int> resources = Game.getCurrentPlayer().Resources;
+            Dictionary<ResourceType, int> resources = Game.GetCurrentPlayer().Resources;
 
             dt.Rows.Add("Brick", resources[ResourceType.BRICK]);
             dt.Rows.Add("Grain", resources[ResourceType.GRAIN]);
@@ -101,11 +101,11 @@ namespace Catan.Utilities {
 
         public void tradeAction() {
             Application.MainLoop.Invoke(() => {
-                Game.getCurrentPlayer().Resources[ResourceType.BRICK]++;
-                Game.getCurrentPlayer().Resources[ResourceType.GRAIN]++;
-                Game.getCurrentPlayer().Resources[ResourceType.LUMBER]++;
-                Game.getCurrentPlayer().Resources[ResourceType.ORE]++;
-                Game.getCurrentPlayer().Resources[ResourceType.WOOL]++;
+                Game.GetCurrentPlayer().Resources[ResourceType.BRICK]++;
+                Game.GetCurrentPlayer().Resources[ResourceType.GRAIN]++;
+                Game.GetCurrentPlayer().Resources[ResourceType.LUMBER]++;
+                Game.GetCurrentPlayer().Resources[ResourceType.ORE]++;
+                Game.GetCurrentPlayer().Resources[ResourceType.WOOL]++;
 
                 setResources();
 
@@ -115,7 +115,7 @@ namespace Catan.Utilities {
         }
 
         private void setPlayerName() {
-            profile.Text = Game.getCurrentPlayer().Name;
+            profile.Text = Game.GetCurrentPlayer().Name;
         }
 
         public void ReloadResources() {

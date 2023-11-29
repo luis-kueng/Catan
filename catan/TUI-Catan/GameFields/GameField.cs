@@ -9,14 +9,11 @@ namespace Catan.GameFields {
         public Tile?[][] Field {
             get; set;
         }
-        public int FieldSize {
-            get; set;
-        }
+        private readonly int FieldSize;
 
         private readonly int _rowSize;
         private readonly NeighbourUtility nb;
         private readonly Tile[] allTiles;
-
 
         public GameField(int fieldSize) {
             FieldSize = fieldSize;
@@ -49,7 +46,7 @@ namespace Catan.GameFields {
         }
 
         private int CalculateAmountOfTiles(int i) {
-            return i < FieldSize ? FieldSize + i : (FieldSize - 1) * 3 + 1 - i;
+            return i < FieldSize ? FieldSize + i : ((FieldSize - 1) * 3) + 1 - i;
         }
 
         private void FillRowWithTiles(int amountOfTiles, int row) {
@@ -68,19 +65,18 @@ namespace Catan.GameFields {
             Field[row] = new Tile[_rowSize];
         }
 
+        private int CalculateAmountOfNullValuesInTileRow(int amountOfTiles) {
+            int nullSpaces = _rowSize - amountOfTiles;
+            return FieldSize % 2 == 0 ? ((nullSpaces == 0) ? 0 : (amountOfTiles % 2 == 0 ? (nullSpaces / 2) + 1 : (nullSpaces / 2))) : nullSpaces / 2;
+        }
+
         private void AddRandomTileToField(int row, int column) {
-            Field[row][column] = Tile.CreateRandomTile(); ;
+            Field[row][column] = Tile.CreateRandomTile();
         }
 
         private void AddAllNeighbours(int i) {
             nb.Column = i;
             nb.AddAllNeighboursInField();
-        }
-
-
-        private int CalculateAmountOfNullValuesInTileRow(int amountOfTiles) {
-            int nullSpaces = _rowSize - amountOfTiles;
-            return FieldSize % 2 == 0 ? ((nullSpaces == 0) ? 0 : nullSpaces / 2 + 1) : nullSpaces / 2;
         }
 
         public void AddBuildingToField(BuildingType buildingType, Player player, int x, int y, TilePoint point) {

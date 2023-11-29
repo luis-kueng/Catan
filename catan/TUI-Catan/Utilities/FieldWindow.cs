@@ -3,7 +3,7 @@ using Terminal.Gui;
 
 namespace Catan.Utilities {
     public class FieldWindow : Window {
-        private View field;
+        private readonly View field;
 
         public FieldWindow() {
             Title = "Game Field";
@@ -22,10 +22,14 @@ namespace Catan.Utilities {
             Add(field);
         }
 
-        public void reloadField(GameField newField) {
-            Application.MainLoop.Invoke(() => {
-                field.Text = GameFieldUtility.GetFieldString(newField);
-            });
+        public void ReloadField(GameField newField) {
+            Application.MainLoop.Invoke(() => field.Text = GameFieldUtility.GetFieldString(newField));
+        }
+
+        protected override void Dispose(bool disposing) {
+            base.Dispose(disposing);
+
+            field.Dispose();
         }
     }
 }

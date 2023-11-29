@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Catan.Players {
+﻿namespace Catan.Players {
     public static class ColorMap {
         public static ConsoleColor MapColorToConsoleColor(Colors color) {
             return color switch {

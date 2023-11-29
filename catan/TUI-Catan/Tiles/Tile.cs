@@ -10,15 +10,9 @@ namespace Catan.Tiles {
         public ResourceType ResourceType {
             get; set;
         }
-        public Dictionary<TilePoint, Building> Buildings {
-            get; set;
-        }
-        public Dictionary<TileSide, StreetBuilding> Streets {
-            get; set;
-        }
-        public Dictionary<TileSide, Tile> NeighbourTiles {
-            get; set;
-        }
+        private readonly Dictionary<TilePoint, Building> Buildings;
+        private readonly Dictionary<TileSide, StreetBuilding> Streets;
+        private readonly Dictionary<TileSide, Tile> NeighbourTiles;
 
         private static readonly Random _random = new();
 
@@ -57,7 +51,6 @@ namespace Catan.Tiles {
 
             rightNeighbour?.AddBuilding(building, mirroredPointRight);
             leftNeighbour?.AddBuilding(building, mirroredPointLeft);
-
         }
 
         private void AddBuilding(Building building, TilePoint point) {
@@ -72,37 +65,40 @@ namespace Catan.Tiles {
 
         private bool IsPointAvailable(TilePoint point) {
             return
-                // TODO: Left Point &&
-                // TODO: Right Point &&
+                IsLeftNeighboutAvailable(point) &&
+                IsRightNeighbourAvailable(point) &&
                 IsNeighbourOnNextTileAvailable(point);
+        }
+
+        private bool IsLeftNeighboutAvailable(TilePoint point) {
+            return GetBuildingByPoint(DirectionConverter.PointToLeft(point)) == null;
+        }
+
+        private bool IsRightNeighbourAvailable(TilePoint point) {
+            return GetBuildingByPoint(DirectionConverter.PointToRight(point)) == null;
+
         }
 
         private bool IsNeighbourOnNextTileAvailable(TilePoint point) {
             try {
-                TileSide neighbourDirection = DirectionConverter.PointToLeftNeighbourSide(point);
+                TileSide leftDirection = DirectionConverter.PointToLeftNeighbourSide(point);
+                TileSide rightDirection = DirectionConverter.PointToRightNeighbourSide(point);
 
-                Tile? neighbourTile;
+                Tile? leftTile = GetNeighbouringTileByPoint(leftDirection);
+                Tile? rightTile = GetNeighbouringTileByPoint(rightDirection);
 
-                if (NeighbourTiles.ContainsKey(neighbourDirection)) {
-                    neighbourTile = NeighbourTiles[neighbourDirection];
-                } else {
-                    neighbourDirection = DirectionConverter.PointToRightNeighbourSide(point);
-
-                    if (NeighbourTiles.ContainsKey(neighbourDirection)) {
-                        neighbourTile = NeighbourTiles[neighbourDirection];
-                    } else {
-                        return false;
-                    }
+                if (leftTile != null) {
+                    return leftTile.GetBuildingByPoint(DirectionConverter.MirroredPointLeft(point)) == null;
                 }
 
-                TilePoint directionForNeighbour = TilePoint.TOPPOINT;
+                if (rightTile != null) {
+                    return rightTile.GetBuildingByPoint(DirectionConverter.MirroredPointRight(point)) == null;
+                }
 
-                return !neighbourTile.Buildings.ContainsKey(directionForNeighbour);
-
+                return true;
             } catch (NotSupportedException) {
                 return false;
             }
-
         }
 
         public Building? GetBuildingByPoint(TilePoint point) {
@@ -114,14 +110,13 @@ namespace Catan.Tiles {
         }
 
         public void AddNeighbouringTile(Tile tile, TileSide side) {
-            if (!NeighbourTiles.ContainsKey(side)) {
+            if (tile != null && !NeighbourTiles.ContainsKey(side)) {
                 NeighbourTiles[side] = tile;
                 tile.AddNeighbouringTile(this, DirectionConverter.MirroredSide(side));
             }
         }
 
         public Tile? GetNeighbouringTileByPoint(TileSide side) {
-
             if (NeighbourTiles.TryGetValue(side, out Tile? tile)) {
                 return tile;
             }

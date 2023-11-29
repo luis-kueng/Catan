@@ -2,29 +2,23 @@
 using Catan.Exceptions;
 using Catan.GameFields;
 using Catan.Players;
-using Catan.Tiles;
 using Catan.Tiles.Directions;
-using Catan.Utilities;
+using System.Collections.ObjectModel;
 
 namespace Catan.Games {
     public class Game {
-        public List<Player> Players {
+        public Collection<Player> Players {
             get;
         }
 
-        public int CurrentPlayer {
-            get; set;
-        }
+        private int CurrentPlayer;
 
         public GameField Field {
             get;
         }
 
-        public Game(int fieldSize, List<Player> players) {
-            if (players == null)
-                throw new PLayersListEmptyException();
-
-            Players = players;
+        public Game(int fieldSize, Collection<Player> players) {
+            Players = players ?? throw new PLayersListEmptyException();
             Field = new(fieldSize);
             CurrentPlayer = 0;
         }
@@ -35,7 +29,7 @@ namespace Catan.Games {
 
         public void BuildBuilding(int x, int y, TilePoint point, BuildingType type) {
             Console.WriteLine("Trying to build");
-            Field.AddBuildingToField(type, getCurrentPlayer(), x, y, point);
+            Field.AddBuildingToField(type, GetCurrentPlayer(), x, y, point);
         }
 
         public void GiveOutResourcesForPlayer() {
@@ -68,7 +62,7 @@ namespace Catan.Games {
             throw new NotImplementedException();
         }
 
-        public Player getCurrentPlayer() {
+        public Player GetCurrentPlayer() {
             return Players[CurrentPlayer];
         }
     }
